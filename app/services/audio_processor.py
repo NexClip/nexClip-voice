@@ -6,19 +6,8 @@ from loguru import logger
 import app.services.openvoice.se_extractor as se_extractor
 from app.services.openvoice.api import BaseSpeakerTTS, ToneColorConverter
 
-# Adjust ROOT_DIR to point two levels up from the current directory
 ROOT_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 ckpt_path = os.path.join(ROOT_DIR, "checkpoints")
-
-# Definizione delle directory relative
-directories = ["processed_audios", "downloaded_videos", "captions", "final_videos"]
-
-base_dir = os.path.join(ROOT_DIR, "data")
-
-# Creazione delle directory se non esistono
-for dir_name in directories:
-    dir_path = os.path.join(base_dir, dir_name)
-    os.makedirs(dir_path, exist_ok=True)
 
 
 def process_audio(

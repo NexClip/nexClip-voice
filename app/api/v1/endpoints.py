@@ -24,11 +24,26 @@ ROOT_DIR = os.path.dirname(
 DOWNLOAD_AUDIO = os.path.join(ROOT_DIR, "data", "downloaded_audios")
 OUTPUT_AUDIO = os.path.join(ROOT_DIR, "data", "output_audios")
 
+directories = [
+    "processed_audios",
+    "downloaded_audios",
+    "processed_audios",
+    "output_audios",
+]
+
+base_dir = os.path.join(ROOT_DIR, "data")
+
+# Creazione delle directory se non esistono
+for dir_name in directories:
+    dir_path = os.path.join(base_dir, dir_name)
+    os.makedirs(dir_path, exist_ok=True)
+
 
 @router.post("/test/")
 async def download_and_process_audio(
     request: AudioDownloadRequest, background_tasks: BackgroundTasks
 ):
+    logger.info(request)
     clone_voice_url = request.clone_audio_url
     original_audio_url = request.original_audio_url
 
@@ -42,7 +57,7 @@ async def download_and_process_audio(
         output_path = os.path.join(OUTPUT_AUDIO, f"{current_time_microseconds}.mp3")
 
         task_status[current_time_microseconds] = "Processing"
-
+        logger.info(f"{output_path}")
         background_tasks.add_task(
             process,
             clone_voice_path,
